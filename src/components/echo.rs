@@ -11,6 +11,10 @@ pub fn Echo() -> Element {
     // use_signal is a hook that creates a state for the component. It takes a closure that returns the initial value of the state.
     // The state is automatically tracked and will rerun any other hooks or components that read it whenever it changes.
     let mut response = use_signal(|| String::new());
+    // Track the value typed into the input so it can be cleared later
+    let mut input_value = use_signal(|| String::new());
+    // Track whether the clear button was pressed to show a message or style
+    let mut cleared = use_signal(|| false);
 
     rsx! {
         document::Link { rel: "stylesheet", href: ECHO_CSS }
@@ -20,9 +24,12 @@ pub fn Echo() -> Element {
             h4 { "ServerFn Echo" }
             input {
                 placeholder: "Type here to echo...",
+                value: "{input_value}",
                 // `oninput` is an event handler that will run when the input changes. It can return either nothing or a future
                 // that will be run when the event runs.
                 oninput:  move |event| async move {
+                   // Update the stored value so it can be cleared later
+                   input_value.set(event.value().clone());
                     // When we call the echo_server function from the client, it will fire a request to the server and return
                     // the response. It handles serialization and deserialization of the request and response for us.
                     let data = echo_server(event.value()).await.unwrap();
@@ -32,6 +39,20 @@ pub fn Echo() -> Element {
                     response.set(data);
                 },
             }
+
+          button {
+               class: if cleared() { "clicked" } else { "" },
+               onclick: move |_| {
+                   input_value.set("0".to_string());
+                   response.set(String::new());
+                   cleared.set(true);
+               },
+               "Clear"
+           }
+
+           if cleared() {
+               p { "Inputs cleared" }
+           }
 
             // Signals can be called like a function to clone the current value of the signal
             if !response().is_empty() {
