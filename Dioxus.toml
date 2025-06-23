@@ -1,9 +1,9 @@
 [application]
+name = "dioxus-app-codex"
 
 [web.app]
-
-# HTML title tag content
 title = "dioxus-app-codex"
+port = 8080
 
 # include `assets` in web platform
 [web.resource]

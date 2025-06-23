@@ -14,6 +14,7 @@ pub fn Config() -> Element {
     let mut fire_alarm_devices = use_signal(|| "0".to_string());
     let mut outputs = use_signal(|| "0".to_string());
     let mut unit_store = use_signal(UnitStore::new);
+    let mut selected_unit_index = use_signal(|| None::<usize>);
 
     let clear_all = move |_| {
         manual_call_points.set("0".to_string());
@@ -22,6 +23,8 @@ pub fn Config() -> Element {
         alarm_zones.set("0".to_string());
         fire_alarm_devices.set("0".to_string());
         outputs.set("0".to_string());
+        unit_store.write().clear();
+        selected_unit_index.set(None);
     };
 
     let configure_units = move |_| {
@@ -54,6 +57,7 @@ pub fn Config() -> Element {
         }
 
         unit_store.set(store);
+        selected_unit_index.set(None);
     };
 
     rsx! {
@@ -63,13 +67,6 @@ pub fn Config() -> Element {
             table { id: "config-table",
                 tbody {
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -82,13 +79,6 @@ pub fn Config() -> Element {
                         td { "Manual Call Points" }
                     }
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -101,13 +91,6 @@ pub fn Config() -> Element {
                         td { "Detectors" }
                     }
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -120,13 +103,6 @@ pub fn Config() -> Element {
                         td { "Detection Zones" }
                     }
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -139,13 +115,6 @@ pub fn Config() -> Element {
                         td { "Alarm Zones" }
                     }
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -158,13 +127,6 @@ pub fn Config() -> Element {
                         td { "Fire Alarm Devices" }
                     }
                     tr {
-
-
-
-
-
-
-
                         td {
                             input {
                                 r#type: "number",
@@ -182,12 +144,47 @@ pub fn Config() -> Element {
                 button { id: "configure-btn", onclick: configure_units, "Configure" }
                 button { id: "clear-btn", onclick: clear_all, "Clear" }
             }
-            div { id: "unit-list",
-
-                h3 { "Units ({unit_store().count()})" }
-                ul {
-                    for unit in unit_store().get_all_units().iter().skip(1) {
-                        li { "{unit.name()}" }
+            div {
+                style: "display: flex; justify-content: center; gap: 20px; margin-top: 20px;",
+                // Left side - Unit List
+                div {
+                    style: "flex: 1; max-width: 600px;",
+                    h3 { style: "text-align: center;", "Units ({unit_store().count()})" }
+                    ul {
+                        style: "max-height: 300px; overflow-y: auto; border: 1px solid white; padding: 15px; list-style: none; margin: 0;",
+                        for (index, unit) in unit_store().get_all_units().iter().skip(1).enumerate() {
+                            li {
+                                style: if selected_unit_index() == Some(index) {
+                                    "background-color: rgba(255, 255, 255, 0.2); padding: 8px; cursor: pointer; margin: 3px 0;"
+                                } else {
+                                    "padding: 8px; cursor: pointer; margin: 3px 0;"
+                                },
+                                onclick: move |_| selected_unit_index.set(Some(index)),
+                                "{unit.name()}"
+                            }
+                        }
+                    }
+                }
+                // Right side - Selected Unit
+                div {
+                    style: "flex: 1; max-width: 600px;",
+                    h3 { style: "text-align: center;", "Selected Unit" }
+                    div {
+                        style: "min-height: 300px; border: 1px solid white; padding: 15px; background-color: rgba(255, 255, 255, 0.05);",
+                        if let Some(selected_idx) = selected_unit_index() {
+                            if let Some(selected_unit) = unit_store().get_all_units().iter().skip(1).nth(selected_idx) {
+                                div {
+                                    h4 { "Unit Details:" }
+                                    p { "Name: {selected_unit.name()}" }
+                                    // Add more unit details here as needed
+                                }
+                            }
+                        } else {
+                            div {
+                                style: "color: rgba(255, 255, 255, 0.5); text-align: center; padding-top: 50px;",
+                                "No unit selected"
+                            }
+                        }
                     }
                 }
             }
