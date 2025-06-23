@@ -50,3 +50,15 @@
 #clear-btn:active {
     transform: scale(0.95);
 }
+
+#unit-list {
+    margin-top: 20px;
+    overflow-y: auto;
+    height: 40%;
+    width: 100%;
+}
+
+#unit-list ul {
+    list-style: none;
+    padding-left: 0;
+}
