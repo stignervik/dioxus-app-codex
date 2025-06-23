@@ -22,6 +22,7 @@ pub fn Config() -> Element {
         alarm_zones.set("0".to_string());
         fire_alarm_devices.set("0".to_string());
         outputs.set("0".to_string());
+        unit_store.write().clear();
     };
 
     let configure_units = move |_| {
@@ -182,10 +183,14 @@ pub fn Config() -> Element {
                 button { id: "configure-btn", onclick: configure_units, "Configure" }
                 button { id: "clear-btn", onclick: clear_all, "Clear" }
             }
-            div { id: "unit-list",
 
+
+
+            div { id: "unit-list",
+                style: "text-align: center; margin-top: 20px;",
                 h3 { "Units ({unit_store().count()})" }
                 ul {
+                    style: "display: inline-block; text-align: left;",
                     for unit in unit_store().get_all_units().iter().skip(1) {
                         li { "{unit.name()}" }
                     }

@@ -61,6 +61,16 @@ impl UnitStore {
         // Total units minus 1 (the Root unit)
         self.units.len() - 1
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.units.is_empty()
+    }
+
+    pub fn clear(&mut self) {
+        self.units.clear();
+        self.units.push(Unit::new(0, "Root"));
+        self.next_id = 1;
+    }
 }
 
 impl Default for UnitStore {
