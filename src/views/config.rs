@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::model::UnitStore;
+use dioxus::prelude::*;
 
 const CONFIG_CSS: Asset = asset!("/assets/styling/config.css");
 
@@ -63,63 +63,117 @@ pub fn Config() -> Element {
             table { id: "config-table",
                 tbody {
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{manual_call_points}",
-                            oninput: move |evt| manual_call_points.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{manual_call_points}",
+                                oninput: move |evt| manual_call_points.set(evt.value().clone())
+                            }
+                        }
                         td { "Manual Call Points" }
                     }
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{detectors}",
-                            oninput: move |evt| detectors.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{detectors}",
+                                oninput: move |evt| detectors.set(evt.value().clone())
+                            }
+                        }
                         td { "Detectors" }
                     }
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{detection_zones}",
-                            oninput: move |evt| detection_zones.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{detection_zones}",
+                                oninput: move |evt| detection_zones.set(evt.value().clone())
+                            }
+                        }
                         td { "Detection Zones" }
                     }
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{alarm_zones}",
-                            oninput: move |evt| alarm_zones.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{alarm_zones}",
+                                oninput: move |evt| alarm_zones.set(evt.value().clone())
+                            }
+                        }
                         td { "Alarm Zones" }
                     }
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{fire_alarm_devices}",
-                            oninput: move |evt| fire_alarm_devices.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{fire_alarm_devices}",
+                                oninput: move |evt| fire_alarm_devices.set(evt.value().clone())
+                            }
+                        }
                         td { "Fire Alarm Devices" }
                     }
                     tr {
-                        td { input {
-                            r#type: "number",
-                            min: "0",
-                            max: "1000",
-                            value: "{outputs}",
-                            oninput: move |evt| outputs.set(evt.value().clone()),
-                        } }
+
+
+
+
+
+
+
+                        td {
+                            input {
+                                r#type: "number",
+                                min: "0",
+                                max: "1000",
+                                value: "{outputs}",
+                                oninput: move |evt| outputs.set(evt.value().clone())
+                            }
+                        }
                         td { "Outputs" }
                     }
                 }
@@ -129,7 +183,8 @@ pub fn Config() -> Element {
                 button { id: "clear-btn", onclick: clear_all, "Clear" }
             }
             div { id: "unit-list",
-                h3 { "Units ({})", unit_store().count() }
+
+                h3 { "Units ({unit_store().count()})" }
                 ul {
                     for unit in unit_store().get_all_units().iter().skip(1) {
                         li { "{unit.name()}" }
