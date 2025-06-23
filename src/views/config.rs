@@ -129,7 +129,7 @@ pub fn Config() -> Element {
                 button { id: "clear-btn", onclick: clear_all, "Clear" }
             }
             div { id: "unit-list",
-                h3 { "Units (" {unit_store().count()} ")" }
+                h3 { "Units ({})", unit_store().count() }
                 ul {
                     for unit in unit_store().get_all_units().iter().skip(1) {
                         li { "{unit.name()}" }
